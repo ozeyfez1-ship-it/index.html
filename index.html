@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xap - Hoş Geldiniz</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* Köşe Yazıları */
+        .top-left { 
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
+            background: rgba(20, 20, 20, 0.9); 
+            padding: 15px; 
+            border-radius: 10px; 
+            border: 1px solid #333;
+            z-index: 10;
+        }
+        .top-right { 
+            position: absolute; 
+            top: 20px; 
+            right: 20px; 
+            font-weight: bold; 
+            color: #444; 
+            letter-spacing: 2px;
+        }
+
+        /* Ana Başlık */
+        h1 { 
+            font-size: 120px; 
+            margin-bottom: 20px; 
+            letter-spacing: 10px; 
+            text-transform: uppercase;
+            text-shadow: 0 0 30px rgba(255,255,255,0.05);
+        }
+        
+        .container { text-align: center; }
+
+        .nav-buttons { display: flex; gap: 15px; justify-content: center; align-items: center; }
+
+        .btn {
+            background: #0a0a0a;
+            color: white;
+            padding: 14px 28px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s ease;
+        }
+
+        .btn:hover { 
+            background: #fff; 
+            color: #000;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+
+        /* Bilgi Kutuları */
+        .info-box {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: #050505;
+            border: 1px solid #222;
+            border-radius: 8px;
+            max-width: 450px;
+            line-height: 1.6;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Ses Paneli */
+        .audio-controls { display: flex; align-items: center; gap: 10px; }
+        .control-btn { 
+            background: #222; 
+            border: none; 
+            color: #fff; 
+            padding: 5px 12px; 
+            border-radius: 3px; 
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .control-btn:hover { background: #333; }
+
+    </style>
+</head>
+<body onclick="startMusic()">
+
+    <div class="top-left">
+        <div class="audio-controls">
+            <span style="font-size: 12px; color: #888;">🎧 Ahiyan - Doldum</span>
+            <button class="control-btn" onclick="togglePlay()" id="playPause">▶️ Oynat</button>
+            <button class="control-btn" onclick="adjustVolume()">🔉 Sesi Azalt</button>
+        </div>
+        <audio id="myAudio" loop>
+            <source src="doldum doldum ahiyan.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <div class="top-right">MADE IN YEEYZ</div>
+
+    <div class="container">
+        <h1>Xap</h1>
+        
+        <div class="nav-buttons">
+            <a href="https://discord.gg/2twvDRXP79" target="_blank" class="btn">Discord Sunucumuz</a>
+            <button class="btn" onclick="showContent('ekip')">Ekibimiz</button>
+            <button class="btn" onclick="showContent('kurallar')">Kurallar</button>
+        </div>
+
+        <div id="ekip" class="info-box">
+            <h3 style="color: #555; margin-top: 0;">SQUAD</h3>
+            <p style="font-size: 18px; letter-spacing: 2px;">Yeeyz • Netron • Zulmheus</p>
+        </div>
+
+        <div id="kurallar" class="info-box" style="text-align: left; font-size: 14px;">
+            🚀 <b>Sunucumuza Hoş Geldin!</b><br><br>
+            Bu sunucu, eğlence ve kaliteli vakit geçirmek için kuruldu.<br>
+            🎮 Oyun, 🤖 bot geliştirme, 🎧 müzik ve daha fazlası burada!<br><br>
+            ✨ <b>Neler var?</b><br>
+            • Aktif ve samimi ortam<br>
+            • Kullanışlı ve eğlenceli botlar<br>
+            • Sürekli güncellenen sistemler<br>
+            • Etkinlikler & ödüller<br><br>
+            Kurallara uy, ortamın tadını çıkar 😎<br>
+            Sen de aramıza katıl!
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById("myAudio");
+        const btn = document.getElementById("playPause");
+        let firstClick = false;
+
+        // Sayfada herhangi bir yere ilk tıklandığında müziği başlat (Tarayıcı izni için)
+        function startMusic() {
+            if(!firstClick) {
+                audio.play();
+                btn.innerText = "⏸️ Durdur";
+                firstClick = true;
+            }
+        }
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                btn.innerText = "⏸️ Durdur";
+            } else {
+                audio.pause();
+                btn.innerText = "▶️ Oynat";
+            }
+        }
+
+        function adjustVolume() {
+            if (audio.volume > 0.2) {
+                audio.volume -= 0.2;
+            } else {
+                audio.volume = 1.0; // Tekrar başa döner
+            }
+        }
+
+        function showContent(id) {
+            // Tüm kutuları kapat
+            document.querySelectorAll('.info-box').forEach(box => box.style.display = 'none');
+            // İlgili kutuyu aç
+            document.getElementById(id).style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
